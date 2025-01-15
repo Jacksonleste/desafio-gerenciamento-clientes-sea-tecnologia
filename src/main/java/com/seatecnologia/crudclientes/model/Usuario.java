@@ -2,7 +2,11 @@ package com.seatecnologia.crudclientes.model;
 
 import com.seatecnologia.crudclientes.enums.Papeis;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -11,9 +15,13 @@ public class Usuario {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "username")
+    private String username;
 
+    @Column(name = "senha")
+    private String senha;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "papel")
     private Papeis papel;
 }
