@@ -7,6 +7,7 @@ import com.seatecnologia.crudclientes.model.Cliente;
 import com.seatecnologia.crudclientes.model.Endereco;
 import com.seatecnologia.crudclientes.model.Telefone;
 import com.seatecnologia.crudclientes.model.dto.ClienteCadastroDTO;
+import com.seatecnologia.crudclientes.model.dto.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,12 @@ public class ClienteService {
             cliente.setEndereco(enderecoExistente);
         } else {
             cliente.setEndereco(endereco);
+        }
+
+        // Validando se tem telefones
+        if (cliente.getTelefones() == null || cliente.getTelefones().isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse("Bad Request", "O cliente deve ter pelo menos um telefone.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
         // Mapeando os telefones
