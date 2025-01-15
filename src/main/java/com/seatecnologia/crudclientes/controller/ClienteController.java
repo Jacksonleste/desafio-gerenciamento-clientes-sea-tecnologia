@@ -1,12 +1,11 @@
 package com.seatecnologia.crudclientes.controller;
 
+import com.seatecnologia.crudclientes.model.dto.ClienteCadastroDTO;
 import com.seatecnologia.crudclientes.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/clientes")
@@ -22,5 +21,10 @@ public class ClienteController {
             @RequestParam(required = false) String sortBy
     ){
         return service.listarClientes(page, asc, sortBy);
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<?> cadastrar(@RequestBody ClienteCadastroDTO clienteDto){
+        return service.cadastrarClientes(clienteDto);
     }
 }

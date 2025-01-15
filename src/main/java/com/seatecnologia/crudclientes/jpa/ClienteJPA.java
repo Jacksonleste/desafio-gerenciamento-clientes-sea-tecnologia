@@ -11,4 +11,7 @@ public interface ClienteJPA extends JpaRepository<Cliente, Long> {
 
     @Override
     Page<Cliente> findAll(Pageable pageable);
+
+    @Override
+    <S extends Cliente> S saveAndFlush(S entity);
 }
