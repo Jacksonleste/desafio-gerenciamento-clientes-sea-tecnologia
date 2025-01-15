@@ -11,7 +11,7 @@ public class ClienteCadastroDTO {
 
     private String nome;
     private String cpf;
-    private String email;
+    private List<String> emails;  // Lista de emails
     private EnderecoDTO endereco;
     private List<TelefoneDTO> telefones;
 

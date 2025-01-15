@@ -1,5 +1,6 @@
 package com.seatecnologia.crudclientes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seatecnologia.crudclientes.enums.Papeis;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Usuario {
     @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
 
+    @JsonIgnore
     @Column(name = "senha", nullable = false)
     private String senha;
 

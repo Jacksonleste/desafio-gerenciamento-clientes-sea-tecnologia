@@ -4,6 +4,7 @@ import com.seatecnologia.crudclientes.enums.TipoTelefone;
 import com.seatecnologia.crudclientes.jpa.ClienteJPA;
 import com.seatecnologia.crudclientes.jpa.EnderecoJPA;
 import com.seatecnologia.crudclientes.model.Cliente;
+import com.seatecnologia.crudclientes.model.Email;
 import com.seatecnologia.crudclientes.model.Endereco;
 import com.seatecnologia.crudclientes.model.Telefone;
 import com.seatecnologia.crudclientes.model.dto.ClienteCadastroDTO;
@@ -41,7 +42,23 @@ public class ClienteService {
         Cliente cliente = new Cliente();
         cliente.setNome(clienteDto.getNome());
         cliente.setCpf(clienteDto.getCpf());
-        cliente.setEmail(clienteDto.getEmail());
+
+        // Validando se tem pelo menos um email
+        if (clienteDto.getEmails() == null || clienteDto.getEmails().isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse("Bad Request", "O cliente deve ter pelo menos um email.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        // Mapeando Email
+        List<Email> emails = clienteDto.getEmails().stream()
+                .map(dto -> {
+                    Email email = new Email();
+                    email.setEmail(dto);
+                    email.setCliente(cliente);
+                    return email;
+                })
+                .collect(Collectors.toList());
+        cliente.setEmails(emails);
 
         // Mapeando o endereço
         Endereco endereco = new Endereco();
@@ -68,7 +85,7 @@ public class ClienteService {
             cliente.setEndereco(endereco);
         }
 
-        // Validando se tem telefones
+        // Validando se tem pelo menos um telefone
         if (cliente.getTelefones() == null || cliente.getTelefones().isEmpty()) {
             ErrorResponse errorResponse = new ErrorResponse("Bad Request", "O cliente deve ter pelo menos um telefone.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
