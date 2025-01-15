@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -108,4 +109,20 @@ public class ClienteService {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente Cadastrado com Sucesso.");
     }
+
+    public ResponseEntity<?> deleteCliente(Long id) {
+        try {
+            if (!clienteJPA.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado.");
+            }
+
+            clienteJPA.deleteById(id);
+
+            return ResponseEntity.status(HttpStatus.OK).body("Cliente deletado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao deletar o cliente: " + e.getMessage());
+        }
+    }
+
 }

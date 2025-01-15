@@ -27,4 +27,9 @@ public class ClienteController {
     public ResponseEntity<?> cadastrar(@RequestBody ClienteCadastroDTO clienteDto){
         return service.cadastrarClientes(clienteDto);
     }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<?> deletar(@PathVariable("id") Long id){
+        return service.deleteCliente(id);
+    }
 }
