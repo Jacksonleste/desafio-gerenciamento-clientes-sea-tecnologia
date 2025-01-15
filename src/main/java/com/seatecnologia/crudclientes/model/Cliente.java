@@ -1,5 +1,6 @@
 package com.seatecnologia.crudclientes.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,12 +25,15 @@ public class Cliente {
     private String cpf;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference
     private List<Email> emails;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "endereco_id", nullable = false)
+    @JsonManagedReference
     private Endereco endereco;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference
     private List<Telefone> telefones;
 }

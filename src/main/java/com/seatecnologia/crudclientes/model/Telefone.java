@@ -1,5 +1,6 @@
 package com.seatecnologia.crudclientes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.seatecnologia.crudclientes.enums.TipoTelefone;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,5 +26,6 @@ public class Telefone {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private Cliente cliente;
 }

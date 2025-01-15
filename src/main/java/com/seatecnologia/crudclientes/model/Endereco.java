@@ -1,5 +1,6 @@
 package com.seatecnologia.crudclientes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,5 +37,6 @@ public class Endereco {
     private String complemento;
 
     @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Cliente> clientes;
 }

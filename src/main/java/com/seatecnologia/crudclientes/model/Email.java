@@ -1,5 +1,6 @@
 package com.seatecnologia.crudclientes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,6 @@ public class Email {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private Cliente cliente;
 }
