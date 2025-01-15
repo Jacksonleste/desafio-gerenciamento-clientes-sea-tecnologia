@@ -1,9 +1,13 @@
 package com.seatecnologia.crudclientes.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "clientes")
 public class Cliente {
@@ -15,13 +19,13 @@ public class Cliente {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "")
+    @Column(name = "cpf")
     private String cpf;
 
     @Column(name = "email")
     private String email;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
