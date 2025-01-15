@@ -16,7 +16,7 @@ public enum TipoTelefone {
 
     public static TipoTelefone getEnumByDescricao(String descricao){
         for(TipoTelefone e : TipoTelefone.values()){
-            if(e.descricao.equals(descricao)) return e;
+            if(e.descricao.equalsIgnoreCase(descricao)) return e;
         }
         return null;
     }

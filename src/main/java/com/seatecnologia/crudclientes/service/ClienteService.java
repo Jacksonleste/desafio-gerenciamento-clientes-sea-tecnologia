@@ -86,7 +86,7 @@ public class ClienteService {
         }
 
         // Validando se tem pelo menos um telefone
-        if (cliente.getTelefones() == null || cliente.getTelefones().isEmpty()) {
+        if (clienteDto.getTelefones() == null || clienteDto.getTelefones().isEmpty()) {
             ErrorResponse errorResponse = new ErrorResponse("Bad Request", "O cliente deve ter pelo menos um telefone.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
