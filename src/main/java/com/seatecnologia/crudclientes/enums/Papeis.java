@@ -14,9 +14,9 @@ public enum Papeis {
         return descricao;
     }
 
-    public static String getEnumByDescricao(String descricao){
+    public static Papeis getEnumByDescricao(String descricao){
         for(Papeis e : Papeis.values()){
-            if(e.descricao.equals(descricao)) return e.getDescricao();
+            if(e.descricao.equals(descricao)) return e;
         }
         return null;
     }
