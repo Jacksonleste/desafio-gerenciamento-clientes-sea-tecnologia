@@ -1,10 +1,8 @@
 package com.seatecnologia.crudclientes.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 public enum Papeis {
     ADMIN("Admin"),
-    DEFAULT("Padrão");
+    USER("Padrão");
 
     private String descricao;
 

@@ -23,8 +23,8 @@ public class Cliente {
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
 
-    @Column(name = "email", nullable = false, unique = true, length = 100)
-    private String email;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Email> emails;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "endereco_id", nullable = false)
