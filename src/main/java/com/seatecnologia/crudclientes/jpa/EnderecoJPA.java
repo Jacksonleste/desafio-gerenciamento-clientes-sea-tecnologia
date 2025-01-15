@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface EnderecoJPA extends JpaRepository<Endereco, Long> {
 
-    Endereco findByCepAndLogradouroAndBairroAndCidadeAndUf(String cep, String logradouro, String bairro, String cidade, String uf);
+    Endereco findByCepAndLogradouroAndBairroAndCidadeAndUfAndComplemento(String cep, String logradouro, String bairro, String cidade, String uf, String Complemento);
 }

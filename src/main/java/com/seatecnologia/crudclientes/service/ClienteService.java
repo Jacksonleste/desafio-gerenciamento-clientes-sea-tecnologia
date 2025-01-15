@@ -49,14 +49,16 @@ public class ClienteService {
         endereco.setBairro(clienteDto.getEndereco().getBairro());
         endereco.setCidade(clienteDto.getEndereco().getCidade());
         endereco.setUf(clienteDto.getEndereco().getUf());
+        endereco.setComplemento(clienteDto.getEndereco().getComplemento());
         cliente.setEndereco(endereco);
 
-        Endereco enderecoExistente = enderecoJPA.findByCepAndLogradouroAndBairroAndCidadeAndUf(
+        Endereco enderecoExistente = enderecoJPA.findByCepAndLogradouroAndBairroAndCidadeAndUfAndComplemento(
                 endereco.getCep(),
                 endereco.getLogradouro(),
                 endereco.getBairro(),
                 endereco.getCidade(),
-                endereco.getUf()
+                endereco.getUf(),
+                endereco.getComplemento()
         );
 
         if (enderecoExistente != null) {

@@ -23,6 +23,7 @@ public class ClienteCadastroDTO {
         private String bairro;
         private String cidade;
         private String uf;
+        private String complemento;
     }
 
     @Getter
