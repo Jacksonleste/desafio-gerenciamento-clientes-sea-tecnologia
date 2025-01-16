@@ -61,7 +61,7 @@ cd gerenciamento-clientes
 
 ### 2. Configuração do Banco de Dados (ou use a configuração que está no meu banco remoto)
 
-Crie o banco de dados no MySQL com o nome `clientes_db` (ou altere o nome no arquivo de configuração):
+Crie o banco de dados no MySQL com o nome `clientes_db`:
 
 ```sql
 CREATE DATABASE clientes_db;
@@ -127,12 +127,6 @@ Ctrl + C
 
    - Para rodar a aplicação localmente, basta utilizar o Maven com o comando `mvn spring-boot:run`.
    - O banco de dados precisa estar configurado corretamente para a aplicação funcionar.
-
----
-
-## 📞 Contato
-
-Para dúvidas ou suporte, entre em contato com o time de desenvolvimento.
 
 ---
 
