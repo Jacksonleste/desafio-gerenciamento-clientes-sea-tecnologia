@@ -17,14 +17,14 @@ public class Telefone {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "numero", unique = true, nullable = false, length = 15)
+    @Column(name = "numero", nullable = false, length = 15)
     private String numero;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_telefone", nullable = false)
     private TipoTelefone tipoTelefone;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     @JsonBackReference
     private Cliente cliente;

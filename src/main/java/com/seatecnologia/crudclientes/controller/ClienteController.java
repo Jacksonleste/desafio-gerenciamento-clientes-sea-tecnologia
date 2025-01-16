@@ -1,5 +1,7 @@
 package com.seatecnologia.crudclientes.controller;
 
+import com.seatecnologia.crudclientes.model.Cliente;
+import com.seatecnologia.crudclientes.model.Telefone;
 import com.seatecnologia.crudclientes.model.dto.ClienteCadastroDTO;
 import com.seatecnologia.crudclientes.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,28 @@ public class ClienteController {
         return service.cadastrarClientes(clienteDto);
     }
 
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editar(
+            @RequestBody ClienteCadastroDTO clienteDto,
+            @PathVariable("id") Long id
+    ){
+//        Cliente clienteAtualizado = service.dtoToCliente(clienteDto);
+        return service.editarCliente(id, clienteDto);
+    }
+
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<?> deletar(@PathVariable("id") Long id){
         return service.deleteCliente(id);
     }
+
+    @PostMapping("/{clienteId}/adicionar-telefone")
+    public ResponseEntity<?> adicionarTelefone(@PathVariable Long clienteId, @RequestBody ClienteCadastroDTO.TelefoneDTO telefoneDto) {
+        return service.adicionarTelefone(clienteId, telefoneDto);
+    }
+
+    @DeleteMapping("telefone/deletar/{id}")
+    public ResponseEntity<?> deletarTelefone(@PathVariable("id") Long id){
+        return service.deleteCliente(id);
+    }
+
 }

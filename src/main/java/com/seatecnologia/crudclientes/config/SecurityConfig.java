@@ -38,8 +38,10 @@ public class SecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/clientes/cadastrar").hasAuthority(Papeis.ADMIN.getDescricao()) // Aplicar regras de acesso no endpoint
-                                .requestMatchers(HttpMethod.PUT, "/clientes/editar").hasAuthority(Papeis.ADMIN.getDescricao())
+                                .requestMatchers(HttpMethod.PUT, "/clientes/editar/**").hasAuthority(Papeis.ADMIN.getDescricao())
                                 .requestMatchers(HttpMethod.DELETE, "/clientes/deletar/**").hasAuthority(Papeis.ADMIN.getDescricao())
+                                .requestMatchers(HttpMethod.DELETE, "/clientes/telefone/deletar/**").hasAuthority(Papeis.ADMIN.getDescricao())
+                                .requestMatchers(HttpMethod.DELETE, "/clientes/**/adicionar-telefone").hasAuthority(Papeis.ADMIN.getDescricao())
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling ->

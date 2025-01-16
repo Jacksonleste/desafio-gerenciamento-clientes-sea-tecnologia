@@ -3,6 +3,7 @@ package com.seatecnologia.crudclientes.service;
 import com.seatecnologia.crudclientes.enums.TipoTelefone;
 import com.seatecnologia.crudclientes.jpa.ClienteJPA;
 import com.seatecnologia.crudclientes.jpa.EnderecoJPA;
+import com.seatecnologia.crudclientes.jpa.TelefoneJPA;
 import com.seatecnologia.crudclientes.model.Cliente;
 import com.seatecnologia.crudclientes.model.Email;
 import com.seatecnologia.crudclientes.model.Endereco;
@@ -31,6 +32,9 @@ public class ClienteService {
 
     @Autowired
     EnderecoJPA enderecoJPA;
+
+    @Autowired
+    TelefoneJPA telefoneJPA;
 
     public ResponseEntity<?> listarClientes(Integer page, Boolean asc, String sortBy){
         PageRequest pageRequest = pageable.getPageable(page, asc, sortBy);
@@ -110,6 +114,59 @@ public class ClienteService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente Cadastrado com Sucesso.");
     }
 
+    @Transactional
+    public ResponseEntity<?> editarCliente(Long id, ClienteCadastroDTO clienteDto) {
+        // Verificar se o cliente existe
+        Cliente cliente = clienteJPA.findById(id).orElse(null);
+        if (cliente == null) {
+            ErrorResponse errorResponse = new ErrorResponse("Not Found", "Cliente não encontrado.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        // Atualizar os dados do cliente
+        cliente.setNome(clienteDto.getNome());
+        cliente.setCpf(clienteDto.getCpf());
+
+        // Atualizar endereço
+        Endereco novoEndereco = new Endereco();
+        novoEndereco.setCep(clienteDto.getEndereco().getCep());
+        novoEndereco.setLogradouro(clienteDto.getEndereco().getLogradouro());
+        novoEndereco.setBairro(clienteDto.getEndereco().getBairro());
+        novoEndereco.setCidade(clienteDto.getEndereco().getCidade());
+        novoEndereco.setUf(clienteDto.getEndereco().getUf());
+        novoEndereco.setComplemento(clienteDto.getEndereco().getComplemento());
+
+        // Verificar se o endereço já existe
+        Endereco enderecoExistente = enderecoJPA.findByCepAndLogradouroAndBairroAndCidadeAndUfAndComplemento(
+                novoEndereco.getCep(),
+                novoEndereco.getLogradouro(),
+                novoEndereco.getBairro(),
+                novoEndereco.getCidade(),
+                novoEndereco.getUf(),
+                novoEndereco.getComplemento()
+        );
+
+        Endereco enderecoToDelete = null;
+        Long mesmoEndereco = clienteJPA.countByEndereco(cliente.getEndereco());
+
+        if (enderecoExistente != null) {
+            if (enderecoExistente != cliente.getEndereco() && mesmoEndereco == 1) enderecoToDelete = cliente.getEndereco();
+            cliente.setEndereco(enderecoExistente);
+        } else {
+            if (mesmoEndereco == 1) {
+                enderecoToDelete = cliente.getEndereco();
+            }
+            cliente.setEndereco(novoEndereco);
+        }
+
+        // Salvar cliente atualizado
+        clienteJPA.saveAndFlush(cliente);
+
+        if(enderecoToDelete != null) enderecoJPA.delete(enderecoToDelete);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Cliente atualizado com sucesso.");
+    }
+
     public ResponseEntity<?> deleteCliente(Long id) {
         try {
             if (!clienteJPA.existsById(id)) {
@@ -122,6 +179,33 @@ public class ClienteService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao deletar o cliente: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> adicionarTelefone(Long clienteId, ClienteCadastroDTO.TelefoneDTO telefoneDto) {
+        Cliente cliente = clienteJPA.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        Telefone telefone = new Telefone();
+        telefone.setNumero(telefoneDto.getNumero());
+        telefone.setTipoTelefone(TipoTelefone.getEnumByDescricao(telefoneDto.getTipo()));
+        telefone.setCliente(cliente);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Telefone adicionado com sucesso.");
+    }
+
+    public ResponseEntity<?> removerTelefone(Long id) {
+        try {
+            if (!telefoneJPA.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Telefone não encontrado.");
+            }
+
+            telefoneJPA.deleteById(id);
+
+            return ResponseEntity.status(HttpStatus.OK).body("Telefone deletado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao deletar o telefone: " + e.getMessage());
         }
     }
 
